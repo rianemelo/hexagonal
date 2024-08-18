@@ -4,14 +4,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class Planeta {
 
-	private Long id;
+	private UUID id;
 	private String nome;
 	private List<Sonda> sondas;
 
-	public Planeta(final Long id, String nome) {
+	public Planeta(final UUID id, String nome) {
 		this.id = id;
 		this.nome = nome;
 		this.sondas = new ArrayList<>();
@@ -23,12 +24,12 @@ public class Planeta {
 		sondas.add(sonda);
 	}
 
-	public void explodirSonda(final Long id) {
+	public void explodirSonda(final UUID id) {
 		final Sonda sonda = getSonda(id).get();
 		sondas.remove(sonda);
 	}
 
-	public void moverSonda(final Long id, String comandos) {
+	public void moverSonda(final UUID id, String comandos) {
 		Sonda sonda = getSonda(id).get();
 		
 		String[] lista = comandos.toUpperCase().split("");
@@ -60,14 +61,14 @@ public class Planeta {
 		}
 	}
 	
-	private Optional<Sonda> getSonda(final Long id) {
+	private Optional<Sonda> getSonda(final UUID id) {
 		return sondas
 				.stream()
 				.filter(sonda -> sonda.getId().equals(id))
 				.findFirst();
 	}
 
-	public Long getId() {
+	public UUID getId() {
 		return id;
 	}
 

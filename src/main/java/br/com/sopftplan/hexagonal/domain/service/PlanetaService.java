@@ -1,15 +1,17 @@
 package br.com.sopftplan.hexagonal.domain.service;
 
+import java.util.UUID;
+
 import br.com.sopftplan.hexagonal.domain.Sonda;
 
 public interface PlanetaService {
 
-	void criarPlaneta(Long id, String nome);
+	void criarPlaneta(String nome);
 
-	void aterrissarSonda(Long planetaId, Sonda sonda);
+	void aterrissarSonda(UUID planetaId, Sonda sonda);
 
-	void explodirSonda(Long planetaId, Long sondaId);
+	void explodirSonda(UUID planetaId, UUID sondaId);
 
-	void moverSonda(Long planetaId, Long sondaId, String comandos);
+	void moverSonda(UUID planetaId, UUID sondaId, String comandos);
 
 }

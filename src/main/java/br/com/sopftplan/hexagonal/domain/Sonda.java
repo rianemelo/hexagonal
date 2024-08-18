@@ -1,8 +1,10 @@
 package br.com.sopftplan.hexagonal.domain;
 
+import java.util.UUID;
+
 public class Sonda {
 
-	private Long id;
+	private UUID id;
 	private Integer posicaoX;
 	private Integer posicaoY;
 	private Integer angulo;
@@ -18,6 +20,8 @@ public class Sonda {
 		case "M":
 			transladar();
 			break;
+		default:
+			throw new DomainException("Comando nao reconhecido!");
 		}
 	}
 
@@ -28,7 +32,7 @@ public class Sonda {
 		posicaoY += (int) Math.sin(Math.PI * omega / 2);
 	}
 
-	public Long getId() {
+	public UUID getId() {
 		return id;
 	}
 
