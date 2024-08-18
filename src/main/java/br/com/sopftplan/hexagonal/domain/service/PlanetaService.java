@@ -1,7 +1,9 @@
 package br.com.sopftplan.hexagonal.domain.service;
 
+import java.util.List;
 import java.util.UUID;
 
+import br.com.sopftplan.hexagonal.domain.Planeta;
 import br.com.sopftplan.hexagonal.domain.Sonda;
 
 public interface PlanetaService {
@@ -12,6 +14,7 @@ public interface PlanetaService {
 
 	void explodirSonda(UUID planetaId, UUID sondaId);
 
-	void moverSonda(UUID planetaId, UUID sondaId, String comandos);
+	Sonda moverSonda(UUID planetaId, UUID sondaId, String comandos);
 
+	List<Planeta> listarPlanetas();
 }

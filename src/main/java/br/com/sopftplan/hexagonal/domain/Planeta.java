@@ -29,7 +29,7 @@ public class Planeta {
 		sondas.remove(sonda);
 	}
 
-	public void moverSonda(final UUID id, String comandos) {
+	public Sonda moverSonda(final UUID id, String comandos) {
 		Sonda sonda = getSonda(id).get();
 		
 		String[] lista = comandos.toUpperCase().split("");
@@ -40,6 +40,7 @@ public class Planeta {
 		}
 		
 		validarPosicao(sonda);
+		return sonda;
 	}
 	
 	private void validarLimites(Sonda sonda) {
