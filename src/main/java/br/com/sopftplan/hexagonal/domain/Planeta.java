@@ -16,8 +16,9 @@ public class Planeta {
 		this.nome = nome;
 		this.sondas = new ArrayList<>();
 	}
-
+	
 	public void aterrissarSonda(final Sonda sonda) {
+		validarLimites(sonda);
 		validarPosicao(sonda);
 		sondas.add(sonda);
 	}
@@ -34,11 +35,19 @@ public class Planeta {
 
 		for (int i = 0; i < lista.length; i++) {
 			sonda.moverComando(lista[i]);
+			validarLimites(sonda);
 		}
 		
 		validarPosicao(sonda);
 	}
 	
+	private void validarLimites(Sonda sonda) {
+		if (sonda.getPosicaoX() >= 6 || sonda.getPosicaoX() <= -6 ||
+				sonda.getPosicaoY() >= 6 || sonda.getPosicaoY() <= -6) {
+			throw new DomainException("Sonda fora do limite 5x5!"); 
+		}
+	}
+
 	public void validarPosicao(Sonda sonda) {
 		Optional<Sonda> sondaEncontrada = sondas
 				.stream()
@@ -52,7 +61,10 @@ public class Planeta {
 	}
 	
 	private Optional<Sonda> getSonda(final Long id) {
-		return sondas.stream().filter(sonda -> sonda.getId().equals(id)).findFirst();
+		return sondas
+				.stream()
+				.filter(sonda -> sonda.getId().equals(id))
+				.findFirst();
 	}
 
 	public Long getId() {
