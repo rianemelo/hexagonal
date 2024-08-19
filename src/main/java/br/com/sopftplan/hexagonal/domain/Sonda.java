@@ -1,10 +1,8 @@
 package br.com.sopftplan.hexagonal.domain;
 
-import java.util.UUID;
-
 public class Sonda {
 
-	private UUID id;
+	private Long id;
 	private Integer posicaoX;
 	private Integer posicaoY;
 	private Integer angulo;
@@ -32,7 +30,7 @@ public class Sonda {
 		posicaoY += (int) Math.sin(Math.PI * omega / 2);
 	}
 
-	public UUID getId() {
+	public Long getId() {
 		return id;
 	}
 

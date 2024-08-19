@@ -4,72 +4,72 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 public class Planeta {
 
-	private UUID id;
+	private Long id;
 	private String nome;
 	private List<Sonda> sondas;
 
-	public Planeta(final UUID id, String nome) {
+	public Planeta(final Long id, String nome) {
 		this.id = id;
 		this.nome = nome;
 		this.sondas = new ArrayList<>();
 	}
-	
+
 	public void aterrissarSonda(final Sonda sonda) {
 		validarLimites(sonda);
 		validarPosicao(sonda);
 		sondas.add(sonda);
 	}
 
-	public void explodirSonda(final UUID id) {
+	public void explodirSonda(final Long id) {
 		final Sonda sonda = getSonda(id).get();
 		sondas.remove(sonda);
 	}
 
-	public Sonda moverSonda(final UUID id, String comandos) {
+	public Sonda moverSonda(final Long id, String comandos) {
 		Sonda sonda = getSonda(id).get();
-		
+
 		String[] lista = comandos.toUpperCase().split("");
 
 		for (int i = 0; i < lista.length; i++) {
 			sonda.moverComando(lista[i]);
 			validarLimites(sonda);
 		}
-		
+
 		validarPosicao(sonda);
 		return sonda;
 	}
-	
+
 	private void validarLimites(Sonda sonda) {
-		if (sonda.getPosicaoX() >= 6 || sonda.getPosicaoX() <= -6 ||
-				sonda.getPosicaoY() >= 6 || sonda.getPosicaoY() <= -6) {
-			throw new DomainException("Sonda fora do limite 5x5!"); 
+		if (sonda.getPosicaoX() >= 6 || sonda.getPosicaoX() <= -6 || sonda.getPosicaoY() >= 6
+				|| sonda.getPosicaoY() <= -6) {
+			throw new DomainException("Sonda fora do limite 5x5!");
 		}
 	}
 
 	public void validarPosicao(Sonda sonda) {
 		Optional<Sonda> sondaEncontrada = sondas
 				.stream()
-				.filter(item -> item.getPosicaoX().equals(sonda.getPosicaoX())
+				.filter(item -> !item.getId().equals(sonda.getId()) &&
+						item.getPosicaoX().equals(sonda.getPosicaoX())
 						&& item.getPosicaoY().equals(sonda.getPosicaoY()))
 				.findFirst();
-		
-		if (!sondaEncontrada.equals(null)) {
+
+		if (!sondaEncontrada.isEmpty()) {
 			throw new DomainException("Posicao ocupada!");
 		}
 	}
-	
-	private Optional<Sonda> getSonda(final UUID id) {
+
+	private Optional<Sonda> getSonda(final Long id) {
 		return sondas
 				.stream()
 				.filter(sonda -> sonda.getId().equals(id))
 				.findFirst();
 	}
 
-	public UUID getId() {
+	public Long getId() {
 		return id;
 	}
 

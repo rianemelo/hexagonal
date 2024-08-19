@@ -1,7 +1,6 @@
 package br.com.sopftplan.hexagonal.domain.service;
 
 import java.util.List;
-import java.util.UUID;
 
 import br.com.sopftplan.hexagonal.domain.Planeta;
 import br.com.sopftplan.hexagonal.domain.Sonda;
@@ -16,22 +15,22 @@ public class PlanetaDomainService implements PlanetaService {
 	}
 
 	@Override
-	public void criarPlaneta(String nome) {
-		Planeta planeta = new Planeta(UUID.randomUUID(), nome);
+	public void criarPlaneta(Long id, String nome) {
+		Planeta planeta = new Planeta(id, nome);
 
 		planetaRepository.save(planeta);
 	}
 
 	@Override
-	public void aterrissarSonda(UUID planetaId, Sonda sonda) {
+	public void aterrissarSonda(Long planetaId, Sonda sonda) {
 		Planeta planeta = buscarPlaneta(planetaId);
-
+		
 		planeta.aterrissarSonda(sonda);
 		planetaRepository.save(planeta);
 	}
 
 	@Override
-	public void explodirSonda(UUID planetaId, UUID sondaId) {
+	public void explodirSonda(Long planetaId, Long sondaId) {
 		Planeta planeta = buscarPlaneta(planetaId);
 
 		planeta.explodirSonda(sondaId);
@@ -39,13 +38,11 @@ public class PlanetaDomainService implements PlanetaService {
 	}
 
 	@Override
-	public Sonda moverSonda(UUID planetaId, UUID sondaId, String comandos) {
+	public void moverSonda(Long planetaId, Long sondaId, String comandos) {
 		Planeta planeta = buscarPlaneta(planetaId);
 
-		Sonda sondaMovida = planeta.moverSonda(sondaId, comandos);
+		planeta.moverSonda(sondaId, comandos);
 		planetaRepository.save(planeta);
-
-		return sondaMovida;
 	}
 
 	@Override
@@ -53,7 +50,7 @@ public class PlanetaDomainService implements PlanetaService {
 		return planetaRepository.findAll();
 	}
 
-	private Planeta buscarPlaneta(UUID id) {
+	private Planeta buscarPlaneta(Long id) {
 		return planetaRepository.findById(id).orElseThrow(() -> new RuntimeException("Planeta nao encontrado!"));
 	}
 

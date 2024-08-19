@@ -2,7 +2,6 @@ package br.com.sopftplan.hexagonal.infrastructure.respository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -23,7 +22,7 @@ public class MongoDbPlanetaRepository implements PlanetaRepository {
 	}
 
 	@Override
-	public Optional<Planeta> findById(UUID id) {
+	public Optional<Planeta> findById(Long id) {
 		return planetaRepository.findById(id);
 	}
 
