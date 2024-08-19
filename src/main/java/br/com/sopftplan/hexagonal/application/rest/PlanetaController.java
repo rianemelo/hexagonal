@@ -3,7 +3,6 @@ package br.com.sopftplan.hexagonal.application.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,10 +12,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.sopftplan.hexagonal.application.request.AterrissarSondaRequest;
 import br.com.sopftplan.hexagonal.application.request.CriarPlanetaRequest;
 import br.com.sopftplan.hexagonal.application.request.MoverSondaRequest;
 import br.com.sopftplan.hexagonal.application.response.ListarPlanetasResponse;
-import br.com.sopftplan.hexagonal.domain.Sonda;
+import br.com.sopftplan.hexagonal.application.response.MoverSondaReponse;
 import br.com.sopftplan.hexagonal.domain.service.PlanetaService;
 
 @RestController
@@ -31,19 +31,19 @@ public class PlanetaController {
 	}
 
 	@PostMapping
-	ResponseEntity<?> criarPlaneta(@RequestBody @Validated CriarPlanetaRequest request) {
+	ResponseEntity<?> criarPlaneta(@RequestBody final CriarPlanetaRequest request) {
 		try {
-			planetaService.criarPlaneta(request.getId(), request.getNome());
+			planetaService.criarPlaneta(request.getPlaneta().getId(), request.getPlaneta().getNome());
 			return ResponseEntity.status(HttpStatus.CREATED).build();
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
 
-	@PostMapping("/{planetaId}/sondas") // AJUSTAR
-	ResponseEntity<?> aterrissarSonda(@PathVariable Long planetaId, @RequestBody final Sonda sonda) {
+	@PostMapping("/{planetaId}/sondas")
+	ResponseEntity<?> aterrissarSonda(@PathVariable Long planetaId, @RequestBody final AterrissarSondaRequest request) {
 		try {
-			planetaService.aterrissarSonda(planetaId, sonda);
+			planetaService.aterrissarSonda(planetaId, request.getSonda());
 			return ResponseEntity.status(HttpStatus.CREATED).build();
 		} catch (RuntimeException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -63,16 +63,18 @@ public class PlanetaController {
 	@PutMapping("/{planetaId}/sondas")
 	ResponseEntity<?> moverSonda(@PathVariable Long planetaId, @RequestBody final MoverSondaRequest request) {
 		try {
-			planetaService.moverSonda(planetaId, request.getSondaId(), request.getComandos());
-			return ResponseEntity.status(HttpStatus.OK).build();
+			MoverSondaReponse response = new MoverSondaReponse(
+					planetaService.moverSonda(planetaId, request.getSondaId(), request.getComandos()));
+			return ResponseEntity.status(HttpStatus.OK).body(response);
 		} catch (RuntimeException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	@GetMapping
-	ListarPlanetasResponse listarPlanetas() { // AJUSTAR
-		return null; // planetaService.listarPlanetas();
+	ListarPlanetasResponse listarPlanetas() {
+		ListarPlanetasResponse response = new ListarPlanetasResponse(planetaService.listarPlanetas());
+		return response;
 	}
 
 }

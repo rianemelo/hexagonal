@@ -1,21 +1,23 @@
 package br.com.sopftplan.hexagonal.application.request;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import br.com.sopftplan.hexagonal.domain.Planeta;
 import jakarta.validation.constraints.NotNull;
 
 public class CriarPlanetaRequest {
 
 	@NotNull
-	private Long id;
+	private Planeta planeta;
 
-	@NotNull
-	private String nome;
-
-	public Long getId() {
-		return id;
+	@JsonCreator
+	public CriarPlanetaRequest(@JsonProperty("planeta") @NotNull final Planeta planeta) {
+		this.planeta = planeta;
 	}
 
-	public String getNome() {
-		return nome;
+	public Planeta getPlaneta() {
+		return this.planeta;
 	}
 
 }

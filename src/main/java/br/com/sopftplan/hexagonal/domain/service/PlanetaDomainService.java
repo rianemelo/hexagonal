@@ -38,11 +38,12 @@ public class PlanetaDomainService implements PlanetaService {
 	}
 
 	@Override
-	public void moverSonda(Long planetaId, Long sondaId, String comandos) {
+	public Sonda moverSonda(Long planetaId, Long sondaId, String comandos) {
 		Planeta planeta = buscarPlaneta(planetaId);
 
-		planeta.moverSonda(sondaId, comandos);
+		Sonda sonda = planeta.moverSonda(sondaId, comandos);
 		planetaRepository.save(planeta);
+		return sonda;
 	}
 
 	@Override

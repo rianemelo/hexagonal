@@ -14,7 +14,7 @@ public interface PlanetaService {
 
 	void explodirSonda(Long planetaId, Long sondaId);
 
-	void moverSonda(Long planetaId, Long sondaId, String comandos);
+	Sonda moverSonda(Long planetaId, Long sondaId, String comandos);
 
 	List<Planeta> listarPlanetas(); //AJUSTAR
 } 
